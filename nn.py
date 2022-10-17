@@ -1,10 +1,16 @@
 import numpy as np
 import pandas as pd
+import scipy 
 
 # The seed will be fixed to 42 for this assigmnet.
 np.random.seed(42)
 
 NUM_FEATS = 90
+
+
+def relu_der(y):
+	(y!=0).astype(int)
+	return y
 
 class Net(object):
 	'''
@@ -70,6 +76,7 @@ class Net(object):
 			y = np.dot(y, self.weights[i])+self.biases[i].T
 			np.array(y)
 			y = np.maximum(0, y)
+		
 		return y
 		# raise NotImplementedError
 
@@ -89,7 +96,7 @@ class Net(object):
 		Hint: You need to do a forward pass before performing backward pass.
 		'''
 		
-		
+
 		
 		#raise NotImplementedError
 
@@ -108,6 +115,7 @@ class Optimizer(object):
 		optimizer.
 		'''
 		
+		self.learning_rate = learning_rate
 
 		# raise NotImplementedError
 
@@ -120,6 +128,10 @@ class Optimizer(object):
 			delta_weights: Gradients of weights with respect to loss.
 			delta_biases: Gradients of biases with respect to loss.
 		'''
+
+		weights = weights - self.learning_rate*delta_weights
+		biases = biases - self.learning_rate*delta_biases
+
 		# raise NotImplementedError
 
 
@@ -134,6 +146,10 @@ def loss_mse(y, y_hat):
 	----------
 		MSE loss between y and y_hat.
 	'''
+
+	MSE = (y - y_hat)**2
+	return MSE
+
 	# raise NotImplementedError
 
 def loss_regularization(weights, biases):
@@ -146,6 +162,10 @@ def loss_regularization(weights, biases):
 	----------
 		l2 regularization loss 
 	'''
+
+	l2 = (biases**2)/len(weights)
+	return l2
+
 	# raise NotImplementedError
 
 def loss_fn(y, y_hat, weights, biases, lamda):
@@ -161,6 +181,10 @@ def loss_fn(y, y_hat, weights, biases, lamda):
 	----------
 		l2 regularization loss 
 	'''
+
+	loss = loss_mse(y, y_hat) + loss_regularization*lamda
+	return loss
+
 	# raise NotImplementedError
 
 def rmse(y, y_hat):
@@ -169,11 +193,15 @@ def rmse(y, y_hat):
 	Parameters
 	----------
 		y : targets, numpy array of shape m x 1
-		y_hat : predictions, numpy array of shape m x 1
+		y_hat : predictions, numpy array of shape m x 1	
 	Returns
 	----------
 		RMSE between y and y_hat.
 	'''
+
+	RMSE = ((y - y_hat)**2 / len(y))**0.5
+	return RMSE
+
 	# raise NotImplementedError
 
 def cross_entropy_loss(y, y_hat):
@@ -187,6 +215,10 @@ def cross_entropy_loss(y, y_hat):
 	----------
 		cross entropy loss
 	'''
+
+	CEL = -np.log(y_hat)
+	return y_hat
+
 	# raise NotImplementedError
 
 def train(

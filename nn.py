@@ -14,19 +14,15 @@ class Net(object):
 		'''
 		Initialize the neural network.
 		Create weights and biases.
-
 		Here, we have provided an example structure for the weights and biases.
 		It is a list of weight and bias matrices, in which, the
 		dimensions of weights and biases are (assuming 1 input layer, 2 hidden layers, and 1 output layer):
 		weights: [(NUM_FEATS, num_units), (num_units, num_units), (num_units, num_units), (num_units, 1)]
 		biases: [(num_units, 1), (num_units, 1), (num_units, 1), (num_units, 1)]
-
 		Please note that this is just an example.
 		You are free to modify or entirely ignore this initialization as per your need.
 		Also you can add more state-tracking variables that might be useful to compute
 		the gradients efficiently.
-
-
 		Parameters
 		----------
 			num_layers : Number of HIDDEN layers.
@@ -52,14 +48,13 @@ class Net(object):
 		self.biases.append(np.random.uniform(-1, 1, size=(1, 1)))
 		self.weights.append(np.random.uniform(-1, 1, size=(self.num_units, 1)))
 
+
 	def __call__(self, X):
 		'''
 		Forward propagate the input X through the network,
 		and return the output.
-
 		Note that for a classification task, the output layer should
 		be a softmax layer. So perform the computations accordingly
-
 		Parameters
 		----------
 			X : Input to the network, numpy array of shape m x d
@@ -67,27 +62,36 @@ class Net(object):
 		----------
 			y : Output of the network, numpy array of shape m x 1
 		'''
-		raise NotImplementedError
+		i=0
+		y = []
+		y = X
+		print(self.num_layers)
+		for i in range(self.num_layers + 1):
+			y = np.dot(y, self.weights[i])+self.biases[i].T
+			np.array(y)
+			y = np.maximum(0, y)
+		return y
+		# raise NotImplementedError
 
 	def backward(self, X, y, lamda):
 		'''
 		Compute and return gradients loss with respect to weights and biases.
 		(dL/dW and dL/db)
-
 		Parameters
 		----------
 			X : Input to the network, numpy array of shape m x d
 			y : Output of the network, numpy array of shape m x 1
 			lamda : Regularization parameter.
-
 		Returns
 		----------
 			del_W : derivative of loss w.r.t. all weight values (a list of matrices).
 			del_b : derivative of loss w.r.t. all bias values (a list of vectors).
-
 		Hint: You need to do a forward pass before performing backward pass.
 		'''
-		raise NotImplementedError
+		
+		
+		
+		#raise NotImplementedError
 
 
 class Optimizer(object):
@@ -98,14 +102,14 @@ class Optimizer(object):
 		'''
 		Create a Gradient Descent based optimizer with given
 		learning rate.
-
 		Other parameters can also be passed to create different types of
 		optimizers.
-
 		Hint: You can use the class members to track various states of the
 		optimizer.
 		'''
-		raise NotImplementedError
+		
+
+		# raise NotImplementedError
 
 	def step(self, weights, biases, delta_weights, delta_biases):
 		'''
@@ -116,84 +120,74 @@ class Optimizer(object):
 			delta_weights: Gradients of weights with respect to loss.
 			delta_biases: Gradients of biases with respect to loss.
 		'''
-		raise NotImplementedError
+		# raise NotImplementedError
 
 
 def loss_mse(y, y_hat):
 	'''
 	Compute Mean Squared Error (MSE) loss betwee ground-truth and predicted values.
-
 	Parameters
 	----------
 		y : targets, numpy array of shape m x 1
 		y_hat : predictions, numpy array of shape m x 1
-
 	Returns
 	----------
 		MSE loss between y and y_hat.
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def loss_regularization(weights, biases):
 	'''
 	Compute l2 regularization loss.
-
 	Parameters
 	----------
 		weights and biases of the network.
-
 	Returns
 	----------
 		l2 regularization loss 
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def loss_fn(y, y_hat, weights, biases, lamda):
 	'''
 	Compute loss =  loss_mse(..) + lamda * loss_regularization(..)
-
 	Parameters
 	----------
 		y : targets, numpy array of shape m x 1
 		y_hat : predictions, numpy array of shape m x 1
 		weights and biases of the network
 		lamda: Regularization parameter
-
 	Returns
 	----------
 		l2 regularization loss 
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def rmse(y, y_hat):
 	'''
 	Compute Root Mean Squared Error (RMSE) loss betwee ground-truth and predicted values.
-
 	Parameters
 	----------
 		y : targets, numpy array of shape m x 1
 		y_hat : predictions, numpy array of shape m x 1
-
 	Returns
 	----------
 		RMSE between y and y_hat.
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def cross_entropy_loss(y, y_hat):
 	'''
 	Compute cross entropy loss
-
 	Parameters
 	----------
 		y : targets, numpy array of shape m x 1
 		y_hat : predictions, numpy array of shape m x 1
-
 	Returns
 	----------
 		cross entropy loss
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def train(
 	net, optimizer, lamda, batch_size, max_epochs,
@@ -207,7 +201,6 @@ def train(
 			1.1 Compute gradients
 			1.2 Update weights and biases using step() of optimizer.
 		3. Compute RMSE on dev data after running `max_epochs` epochs.
-
 	Here we have added the code to loop over batches and perform backward pass
 	for each batch in the loop.
 	For this code also, you are free to heavily modify it.
@@ -256,24 +249,29 @@ def get_test_data_predictions(net, inputs):
 	Perform forward pass on test data and get the final predictions that can
 	be submitted on Kaggle.
 	Write the final predictions to the part2.csv file.
-
 	Parameters
 	----------
 		net : trained neural network
 		inputs : test input, numpy array of shape m x d
-
 	Returns
 	----------
 		predictions (optional): Predictions obtained from forward pass
 								on test data, numpy array of shape m x 1
 	'''
-	raise NotImplementedError
+	# raise NotImplementedError
 
 def read_data():
 	'''
 	Read the train, dev, and test datasets
 	'''
-	raise NotImplementedError
+
+	train_input = np.array(pd.read_csv("regression/data/train.csv").drop(columns=['1']))
+	train_target = np.array(pd.read_csv("regression/data/train.csv", usecols=(0,)))
+	dev_input = np.array(pd.read_csv("regression/data/dev.csv").drop(columns=['1']))
+	dev_target = np.array(pd.read_csv("regression/data/dev.csv", usecols=(0,)))
+	test_input = np.array(pd.read_csv("regression/data/test.csv"))
+	
+	#raise NotImplementedError
 
 	return train_input, train_target, dev_input, dev_target, test_input
 
@@ -284,7 +282,7 @@ def main():
 	max_epochs = 50
 	batch_size = 256
 	learning_rate = 0.001
-	num_layers = 1
+	num_layers = 2
 	num_units = 64
 	lamda = 0.1 # Regularization Parameter
 
